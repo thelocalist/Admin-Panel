@@ -7,7 +7,10 @@ import {
   SaveButton,
   ImageField,
   ImageInput,
+  FormDataConsumer,
+  Labeled,
 } from 'react-admin';
+import { STATIC_URL } from '../../../constants';
 
 const EditCommunityToolbar = (props) => {
   return (
@@ -18,7 +21,6 @@ const EditCommunityToolbar = (props) => {
 };
 
 export default function EditStory(props) {
-  console.log(props);
   return (
     <Edit title="Edit community" {...props}>
       <SimpleForm toolbar={<EditCommunityToolbar />}>
@@ -30,6 +32,23 @@ export default function EditStory(props) {
         >
           <ImageField source="src" title="title" />
         </ImageInput>
+        <FormDataConsumer>
+          {({ formData }) => {
+            if (formData.imagePath.src) {
+              return null;
+            }
+            return (
+              <div>
+                <Labeled label="Community image">
+                  <img
+                    src={`${STATIC_URL}${formData.imagePath}`}
+                    alt="community"
+                  />
+                </Labeled>
+              </div>
+            );
+          }}
+        </FormDataConsumer>
       </SimpleForm>
     </Edit>
   );

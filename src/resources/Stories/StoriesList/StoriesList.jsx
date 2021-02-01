@@ -6,23 +6,41 @@ import {
   DateField,
   EditButton,
   DeleteButton,
-  // SimpleList,
+  Filter,
+  ReferenceField,
+  ReferenceInput,
+  SelectInput,
 } from 'react-admin';
+
+const StoriesFilter = (props) => (
+  <Filter {...props}>
+    <ReferenceInput
+      label="Community"
+      source="communityId"
+      reference="communities"
+    >
+      <SelectInput optionText="title" />
+    </ReferenceInput>
+  </Filter>
+);
 
 export default function UsersList(props) {
   return (
-    <List {...props}>
+    <List {...props} filters={<StoriesFilter />}>
       <Datagrid>
         <TextField source="title" />
+        <ReferenceField
+          label="Community"
+          source="communityId"
+          reference="communities"
+        >
+          <TextField source="title" />
+        </ReferenceField>
         <TextField source="authorName" />
         <DateField source="createdAt" />
         <EditButton basePath="/stories" />
         <DeleteButton />
       </Datagrid>
-      {/*   <SimpleList
-        primaryText={(story) => story.title}
-        secondaryText={(story) => story.createdAt}
-      /> */}
     </List>
   );
 }

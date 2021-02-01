@@ -10,6 +10,7 @@ import {
   ImageField,
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
+import { IMAGE_MAX_SIZE, IMAGE_MIME_TYPES } from '../../../constants';
 
 export default function CreateStory(props) {
   return (
@@ -23,12 +24,21 @@ export default function CreateStory(props) {
           reference="communities"
           source="communityId"
         >
-          <SelectInput optionText="title" />
+          <SelectInput optionText="title" defaultValue="" />
         </ReferenceInput>
         <ImageInput
-          source="pictures"
-          accept="image/png, image/jpeg"
-          maxSize="10000000"
+          source="headerImagePath"
+          accept={IMAGE_MIME_TYPES}
+          maxSize={IMAGE_MAX_SIZE}
+          label="Header image"
+        >
+          <ImageField source="src" title="title" />
+        </ImageInput>
+        <ImageInput
+          source="authorImagePath"
+          accept={IMAGE_MIME_TYPES}
+          maxSize={IMAGE_MAX_SIZE}
+          label="Author image"
         >
           <ImageField source="src" title="title" />
         </ImageInput>

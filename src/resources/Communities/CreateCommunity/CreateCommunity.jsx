@@ -5,11 +5,17 @@ import {
   TextInput,
   ImageField,
   ImageInput,
+  useRedirect,
 } from 'react-admin';
 
 export default function CreateCommunity(props) {
+  const redirect = useRedirect();
   return (
-    <Create title="Create a community" {...props}>
+    <Create
+      title="Create a community"
+      {...props}
+      onSuccess={() => redirect('/communities')}
+    >
       <SimpleForm>
         <TextInput source="title" />
         <ImageInput source="imagePath">
