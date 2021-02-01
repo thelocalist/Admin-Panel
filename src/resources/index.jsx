@@ -1,6 +1,6 @@
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
-import { dataProvider, authProvider } from '../apiProviders';
+import { myDataProvider, authProvider } from '../apiProviders';
 
 import StoriesList from './Stories/StoriesList/StoriesList';
 import CreateStory from './Stories/CreateStory/CreateStory';
@@ -10,9 +10,11 @@ import CommunitiesList from './Communities/CommunitiesList/CommunitiesList';
 import CreateCommunity from './Communities/CreateCommunity/CreateCommunity';
 import EditCommunity from './Communities/EditCommunity/EditCommunity';
 
+import SubscribersList from './Subscribers/SubscribersList/Subscriberslist';
+
 export default function index() {
   return (
-    <Admin dataProvider={dataProvider} authProvider={authProvider}>
+    <Admin dataProvider={myDataProvider} authProvider={authProvider}>
       <Resource
         name="stories"
         list={StoriesList}
@@ -25,6 +27,7 @@ export default function index() {
         create={CreateCommunity}
         edit={EditCommunity}
       />
+      <Resource name="contacts" list={SubscribersList} />
     </Admin>
   );
 }

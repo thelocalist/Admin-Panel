@@ -56,14 +56,54 @@ export const logoutOnAuthError = ({ status }) => {
   }
 };
 
-export const dataProvider = restProvider(
-  `${API_URL}/admin`,
-  (url, options = {}) =>
-    fetchUtils.fetchJson(url, {
-      ...options,
-      ...fetchConfig,
-    })
+const dataProvider = restProvider(`${API_URL}/admin`, (url, options = {}) =>
+  fetchUtils.fetchJson(url, {
+    ...options,
+    ...fetchConfig,
+  })
 );
+
+const convertFileToBase64 = (file) => {
+  console.log('FILE');
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+
+    reader.readAsDataURL(file.rawFile);
+  });
+};
+
+export const myDataProvider = {
+  ...dataProvider,
+  create: (resource, params) => {
+    if (
+      (resource !== 'communities' && resource !== 'stories') ||
+      !params.data.pictures
+    ) {
+      // fallback to the default implementation
+      return dataProvider.create(resource, params);
+    }
+    const images = [params.data.pictures];
+
+    return Promise.all(images.map(convertFileToBase64))
+      .then((base64Pictures) =>
+        base64Pictures.map((picture64) => ({
+          src: picture64,
+          title: `${params.data.title}`,
+        }))
+      )
+      .then((transformedNewPictures) =>
+        dataProvider.create(resource, {
+          ...params,
+          data: {
+            ...params.data,
+            pictures: [...transformedNewPictures],
+          },
+        })
+      );
+  },
+};
 
 // eslint-disable-next-line complexity
 export const authProvider = {

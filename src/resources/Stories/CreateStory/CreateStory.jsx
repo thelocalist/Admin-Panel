@@ -6,6 +6,8 @@ import {
   ReferenceInput,
   SelectInput,
   BooleanInput,
+  ImageInput,
+  ImageField,
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
@@ -23,6 +25,13 @@ export default function CreateStory(props) {
         >
           <SelectInput optionText="title" />
         </ReferenceInput>
+        <ImageInput
+          source="pictures"
+          accept="image/png, image/jpeg"
+          maxSize="10000000"
+        >
+          <ImageField source="src" title="title" />
+        </ImageInput>
         <RichTextInput source="content" />
       </SimpleForm>
     </Create>
