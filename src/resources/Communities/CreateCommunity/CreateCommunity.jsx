@@ -6,6 +6,7 @@ import {
   ImageField,
   ImageInput,
   useRedirect,
+  required,
 } from 'react-admin';
 import { IMAGE_MAX_SIZE, IMAGE_MIME_TYPES } from '../../../constants';
 
@@ -18,8 +19,8 @@ export default function CreateCommunity(props) {
       onSuccess={() => redirect('/communities')}
     >
       <SimpleForm>
-        <TextInput source="title" />
-        <ImageInput source="image">
+        <TextInput source="title" validate={[required()]} />
+        <ImageInput source="image" validate={[required()]}>
           <ImageField
             source="src"
             title="title"

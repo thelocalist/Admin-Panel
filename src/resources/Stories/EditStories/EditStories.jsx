@@ -11,6 +11,7 @@ import {
   FormDataConsumer,
   ImageField,
   ImageInput,
+  required,
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 import {
@@ -31,13 +32,14 @@ export default function EditStory(props) {
   return (
     <Edit title="Edit story" {...props}>
       <SimpleForm toolbar={<EditStoryToolbar />}>
-        <TextInput source="title" />
-        <TextInput source="authorName" />
+        <TextInput source="title" validate={[required()]} />
+        <TextInput source="authorName" validate={[required()]} />
         <BooleanInput label="Featured" source="isFeatured" />
         <ReferenceInput
           label="Community"
           source="communityId"
           reference="communities"
+          validate={[required()]}
         >
           <SelectInput optionText="title" defaultValue="" />
         </ReferenceInput>
@@ -77,7 +79,7 @@ export default function EditStory(props) {
             )
           }
         </FormDataConsumer>
-        <RichTextInput source="content" />
+        <RichTextInput source="content" validate={[required()]} />
       </SimpleForm>
     </Edit>
   );

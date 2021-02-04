@@ -26,7 +26,11 @@ const StoriesFilter = (props) => (
 
 export default function UsersList(props) {
   return (
-    <List {...props} filters={<StoriesFilter />}>
+    <List
+      {...props}
+      filters={<StoriesFilter />}
+      sort={{ field: 'createdAt', order: 'DESC' }}
+    >
       <Datagrid>
         <TextField source="title" />
         <ReferenceField

@@ -10,7 +10,7 @@ import {
 
 export default function UsersList(props) {
   return (
-    <List {...props}>
+    <List {...props} sort={{ field: 'createdAt', order: 'DESC' }}>
       <Datagrid>
         <TextField source="title" />
         <DateField source="createdAt" />

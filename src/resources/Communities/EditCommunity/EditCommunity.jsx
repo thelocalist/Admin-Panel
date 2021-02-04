@@ -8,6 +8,7 @@ import {
   ImageField,
   ImageInput,
   FormDataConsumer,
+  required,
 } from 'react-admin';
 import {
   IMAGE_MAX_SIZE,
@@ -27,7 +28,7 @@ export default function EditStory(props) {
   return (
     <Edit title="Edit community" {...props}>
       <SimpleForm toolbar={<EditCommunityToolbar />}>
-        <TextInput source="title" />
+        <TextInput source="title" validate={[required()]} />
         <ImageInput
           source="image"
           accept={IMAGE_MIME_TYPES}
