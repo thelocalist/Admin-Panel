@@ -63,46 +63,70 @@ const dataProvider = restProvider(`${API_URL}/admin`, (url, options = {}) =>
   })
 );
 
-const convertFileToBase64 = (file) => {
-  console.log('FILE');
-  return new Promise((resolve, reject) => {
+const readFileAsBase64 = ({ key, rawFile }) =>
+  new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => resolve({ key, value: reader.result });
     reader.onerror = reject;
 
-    reader.readAsDataURL(file.rawFile);
+    reader.readAsDataURL(rawFile);
   });
+
+const isImage = ({ rawFile }) => rawFile instanceof File;
+
+const getDataWithoutImages = (params) =>
+  Object.keys(params.data).reduce((data, key) => {
+    const value = params.data[key];
+
+    if (!isImage(value)) {
+      // eslint-disable-next-line no-param-reassign
+      data[key] = value;
+    }
+    return data;
+  }, {});
+
+const getImagesData = (params) =>
+  Object.keys(params.data).reduce((data, key) => {
+    const value = params.data[key];
+
+    if (isImage(value)) {
+      data.push({
+        ...value,
+        key,
+      });
+    }
+    return data;
+  }, []);
+
+const convertImagesToBase64 = (params) => {
+  const dataWithoutImages = getDataWithoutImages(params);
+  const dataImagesArray = getImagesData(params);
+
+  return Promise.all(dataImagesArray.map(readFileAsBase64)).then(
+    (base64Images) => ({
+      ...params,
+      data: {
+        ...dataWithoutImages,
+        ...base64Images.reduce((data, { key, value }) => {
+          // eslint-disable-next-line no-param-reassign
+          data[key] = value;
+          return data;
+        }, {}),
+      },
+    })
+  );
 };
 
 export const myDataProvider = {
   ...dataProvider,
-  create: (resource, params) => {
-    if (
-      (resource !== 'communities' && resource !== 'stories') ||
-      !params.data.pictures
-    ) {
-      // fallback to the default implementation
-      return dataProvider.create(resource, params);
-    }
-    const images = [params.data.pictures];
-
-    return Promise.all(images.map(convertFileToBase64))
-      .then((base64Pictures) =>
-        base64Pictures.map((picture64) => ({
-          src: picture64,
-          title: `${params.data.title}`,
-        }))
-      )
-      .then((transformedNewPictures) =>
-        dataProvider.create(resource, {
-          ...params,
-          data: {
-            ...params.data,
-            pictures: [...transformedNewPictures],
-          },
-        })
-      );
-  },
+  create: (resource, params) =>
+    convertImagesToBase64(params).then((paramsWithImages) =>
+      dataProvider.create(resource, paramsWithImages)
+    ),
+  update: (resource, params) =>
+    convertImagesToBase64(params).then((paramsWithImages) =>
+      dataProvider.update(resource, paramsWithImages)
+    ),
 };
 
 // eslint-disable-next-line complexity

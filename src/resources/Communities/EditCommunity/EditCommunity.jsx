@@ -8,9 +8,12 @@ import {
   ImageField,
   ImageInput,
   FormDataConsumer,
-  Labeled,
 } from 'react-admin';
-import { STATIC_URL } from '../../../constants';
+import {
+  IMAGE_MAX_SIZE,
+  IMAGE_MIME_TYPES,
+  STATIC_URL,
+} from '../../../constants';
 
 const EditCommunityToolbar = (props) => {
   return (
@@ -26,28 +29,18 @@ export default function EditStory(props) {
       <SimpleForm toolbar={<EditCommunityToolbar />}>
         <TextInput source="title" />
         <ImageInput
-          source="imagePath"
-          accept="image/png, image/jpeg"
-          maxSize="10000000"
+          source="image"
+          accept={IMAGE_MIME_TYPES}
+          maxSize={IMAGE_MAX_SIZE}
         >
           <ImageField source="src" title="title" />
         </ImageInput>
         <FormDataConsumer>
-          {({ formData }) => {
-            if (formData.imagePath.src) {
-              return null;
-            }
-            return (
-              <div>
-                <Labeled label="Community image">
-                  <img
-                    src={`${STATIC_URL}${formData.imagePath}`}
-                    alt="community"
-                  />
-                </Labeled>
-              </div>
-            );
-          }}
+          {({ formData }) =>
+            formData.imagePath && (
+              <img src={`${STATIC_URL}${formData.imagePath}`} alt="community" />
+            )
+          }
         </FormDataConsumer>
       </SimpleForm>
     </Edit>

@@ -27,7 +27,7 @@ export default function CreateStory(props) {
           <SelectInput optionText="title" defaultValue="" />
         </ReferenceInput>
         <ImageInput
-          source="headerImagePath"
+          source="headerImage"
           accept={IMAGE_MIME_TYPES}
           maxSize={IMAGE_MAX_SIZE}
           label="Header image"
@@ -35,7 +35,7 @@ export default function CreateStory(props) {
           <ImageField source="src" title="title" />
         </ImageInput>
         <ImageInput
-          source="authorImagePath"
+          source="authorImage"
           accept={IMAGE_MIME_TYPES}
           maxSize={IMAGE_MAX_SIZE}
           label="Author image"

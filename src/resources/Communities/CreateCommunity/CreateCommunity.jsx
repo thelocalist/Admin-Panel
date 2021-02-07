@@ -7,6 +7,7 @@ import {
   ImageInput,
   useRedirect,
 } from 'react-admin';
+import { IMAGE_MAX_SIZE, IMAGE_MIME_TYPES } from '../../../constants';
 
 export default function CreateCommunity(props) {
   const redirect = useRedirect();
@@ -18,12 +19,12 @@ export default function CreateCommunity(props) {
     >
       <SimpleForm>
         <TextInput source="title" />
-        <ImageInput source="imagePath">
+        <ImageInput source="image">
           <ImageField
-            accept="image/png, image/jpeg"
-            maxSize="10000000"
             source="src"
             title="title"
+            accept={IMAGE_MIME_TYPES}
+            maxSize={IMAGE_MAX_SIZE}
           />
         </ImageInput>
       </SimpleForm>

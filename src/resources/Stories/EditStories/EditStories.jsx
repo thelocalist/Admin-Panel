@@ -42,7 +42,7 @@ export default function EditStory(props) {
           <SelectInput optionText="title" defaultValue="" />
         </ReferenceInput>
         <ImageInput
-          source="headerImagePath"
+          source="headerImage"
           accept={IMAGE_MIME_TYPES}
           maxSize={IMAGE_MAX_SIZE}
           label="Header image"
@@ -50,22 +50,17 @@ export default function EditStory(props) {
           <ImageField source="src" title="title" />
         </ImageInput>
         <FormDataConsumer>
-          {({ formData }) => {
-            if (formData.headerImagePath.src) {
-              return null;
-            }
-            return (
-              <div>
-                <img
-                  src={`${STATIC_URL}${formData.headerImagePath}`}
-                  alt="community"
-                />
-              </div>
-            );
-          }}
+          {({ formData }) =>
+            formData.headerImagePath && (
+              <img
+                src={`${STATIC_URL}${formData.headerImagePath}`}
+                alt="Header"
+              />
+            )
+          }
         </FormDataConsumer>
         <ImageInput
-          source="authorImagePath"
+          source="authorImage"
           accept={IMAGE_MIME_TYPES}
           maxSize={IMAGE_MAX_SIZE}
           label="Author image"
@@ -73,19 +68,14 @@ export default function EditStory(props) {
           <ImageField source="src" title="title" />
         </ImageInput>
         <FormDataConsumer>
-          {({ formData }) => {
-            if (formData.authorImagePath.src) {
-              return null;
-            }
-            return (
-              <div>
-                <img
-                  src={`${STATIC_URL}${formData.authorImagePath}`}
-                  alt="community"
-                />
-              </div>
-            );
-          }}
+          {({ formData }) =>
+            formData.authorImagePath && (
+              <img
+                src={`${STATIC_URL}${formData.authorImagePath}`}
+                alt="Author"
+              />
+            )
+          }
         </FormDataConsumer>
         <RichTextInput source="content" />
       </SimpleForm>
