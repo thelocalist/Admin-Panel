@@ -1,4 +1,4 @@
-import { fetchUtils } from 'react-admin';
+import { fetchUtils, HttpError } from 'react-admin';
 import restProvider from 'ra-data-simple-rest';
 import { API_URL, AUTH_TOKEN_NAME } from './constants';
 
@@ -6,7 +6,55 @@ export const fetchConfig = {
   headers: new Headers({
     Accept: 'application/json',
     'Content-Type': 'application/json',
+    'Access-Control-Expose-Headers': 'Content-Range, X-Total-Count',
   }),
+};
+
+const fetchJson = async (url, options = {}) => {
+  const requestHeaders =
+    options.headers ||
+    new Headers({
+      Accept: 'application/json',
+    });
+  if (
+    !requestHeaders.has('Content-Type') &&
+    !(options && options.body && options.body instanceof FormData)
+  ) {
+    requestHeaders.set('Content-Type', 'application/json');
+  }
+  if (options.user && options.user.authenticated && options.user.token) {
+    requestHeaders.set('Authorization', options.user.token);
+  }
+  const response = await fetch(url, { ...options, headers: requestHeaders });
+  const text = await response.text();
+  const o = {
+    status: response.status,
+    statusText: response.statusText,
+    headers: response.headers,
+    body: text,
+  };
+  const { status } = o;
+  const { statusText } = o;
+  const { headers } = o;
+  const { body } = o;
+  let json;
+  try {
+    json = JSON.parse(body);
+  } catch (e) {
+    json = {};
+    json.message = 'Something went wrong';
+  }
+  if (status < 200 || status >= 300) {
+    return Promise.reject(
+      new HttpError(json.message || statusText, status, json)
+    );
+  }
+  return Promise.resolve({
+    status,
+    headers,
+    body,
+    json,
+  });
 };
 
 const applyAuthToken = () => {
@@ -57,10 +105,11 @@ export const logoutOnAuthError = ({ status }) => {
 };
 
 const dataProvider = restProvider(`${API_URL}/admin`, (url, options = {}) =>
-  fetchUtils.fetchJson(url, {
+  /* fetchUtils.fetchJson(url, {
     ...options,
     ...fetchConfig,
-  })
+  }) */
+  fetchJson(url, { ...options, ...fetchConfig })
 );
 
 const readFileAsBase64 = ({ key, rawFile }) =>
@@ -72,7 +121,9 @@ const readFileAsBase64 = ({ key, rawFile }) =>
     reader.readAsDataURL(rawFile);
   });
 
-const isImage = ({ rawFile }) => rawFile instanceof File;
+// const isImage = ({ rawFile }) => rawFile instanceof File;
+
+const isImage = (value) => value && value.rawFile instanceof File;
 
 const getDataWithoutImages = (params) =>
   Object.keys(params.data).reduce((data, key) => {
