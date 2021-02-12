@@ -18,7 +18,15 @@ import {
   IMAGE_MAX_SIZE,
   IMAGE_MIME_TYPES,
   STATIC_URL,
+  AREAS,
 } from '../../../constants';
+
+const neighborhoodChoises = AREAS.map((area) => {
+  return {
+    id: area.toLowerCase(),
+    name: area,
+  };
+});
 
 const EditStoryToolbar = (props) => {
   return (
@@ -43,6 +51,12 @@ export default function EditStory(props) {
         >
           <SelectInput optionText="title" defaultValue="" />
         </ReferenceInput>
+        <SelectInput
+          source="neighborhood"
+          choices={neighborhoodChoises}
+          validate={[required()]}
+          autoComplete
+        />
         <ImageInput
           source="headerImage"
           accept={IMAGE_MIME_TYPES}

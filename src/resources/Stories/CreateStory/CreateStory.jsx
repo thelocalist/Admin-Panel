@@ -12,7 +12,14 @@ import {
   useRedirect,
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
-import { IMAGE_MAX_SIZE, IMAGE_MIME_TYPES } from '../../../constants';
+import { IMAGE_MAX_SIZE, IMAGE_MIME_TYPES, AREAS } from '../../../constants';
+
+const neighborhoodChoises = AREAS.map((area) => {
+  return {
+    id: area.toLowerCase(),
+    name: area,
+  };
+});
 
 export default function CreateStory(props) {
   const redirect = useRedirect();
@@ -34,6 +41,12 @@ export default function CreateStory(props) {
         >
           <SelectInput optionText="title" defaultValue="" />
         </ReferenceInput>
+        <SelectInput
+          source="neighborhood"
+          choices={neighborhoodChoises}
+          validate={[required()]}
+          autoComplete
+        />
         <ImageInput
           source="headerImage"
           accept={IMAGE_MIME_TYPES}
