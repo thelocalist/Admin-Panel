@@ -12,6 +12,15 @@ import {
   SelectInput,
 } from 'react-admin';
 
+import { AREAS } from '../../../constants';
+
+const neighborhoodChoises = AREAS.map((area) => {
+  return {
+    id: area.toLowerCase(),
+    name: area,
+  };
+});
+
 const StoriesFilter = (props) => (
   <Filter {...props}>
     <ReferenceInput
@@ -21,6 +30,7 @@ const StoriesFilter = (props) => (
     >
       <SelectInput optionText="title" />
     </ReferenceInput>
+    <SelectInput source="neighborhood" choices={neighborhoodChoises} />
   </Filter>
 );
 
