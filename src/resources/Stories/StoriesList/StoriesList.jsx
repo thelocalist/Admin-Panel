@@ -12,12 +12,12 @@ import {
   SelectInput,
 } from 'react-admin';
 
-import { AREAS } from '../../../constants';
+import { NEIGHBORHOODS } from '../../../constants';
 
-const neighborhoodChoises = AREAS.map((area) => {
+const neighborhoodChoises = NEIGHBORHOODS.map((neighborhood) => {
   return {
-    id: area.toLowerCase(),
-    name: area,
+    id: neighborhood.toLowerCase(),
+    name: neighborhood,
   };
 });
 

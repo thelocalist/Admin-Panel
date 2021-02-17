@@ -12,12 +12,16 @@ import {
   useRedirect,
 } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
-import { IMAGE_MAX_SIZE, IMAGE_MIME_TYPES, AREAS } from '../../../constants';
+import {
+  IMAGE_MAX_SIZE,
+  IMAGE_MIME_TYPES,
+  NEIGHBORHOODS,
+} from '../../../constants';
 
-const neighborhoodChoises = AREAS.map((area) => {
+const neighborhoodChoises = NEIGHBORHOODS.map((neighborhood) => {
   return {
-    id: area.toLowerCase(),
-    name: area,
+    id: neighborhood.toLowerCase(),
+    name: neighborhood,
   };
 });
 

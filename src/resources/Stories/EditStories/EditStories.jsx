@@ -18,13 +18,13 @@ import {
   IMAGE_MAX_SIZE,
   IMAGE_MIME_TYPES,
   STATIC_URL,
-  AREAS,
+  NEIGHBORHOODS,
 } from '../../../constants';
 
-const neighborhoodChoises = AREAS.map((area) => {
+const neighborhoodChoises = NEIGHBORHOODS.map((neighborhood) => {
   return {
-    id: area.toLowerCase(),
-    name: area,
+    id: neighborhood.toLowerCase(),
+    name: neighborhood,
   };
 });
 
