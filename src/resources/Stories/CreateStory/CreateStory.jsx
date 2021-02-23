@@ -18,6 +18,8 @@ import {
   NEIGHBORHOODS,
 } from '../../../constants';
 
+import StoryTitleInput from '../../../components/StoryTitleInput';
+
 const neighborhoodChoises = NEIGHBORHOODS.map((neighborhood) => {
   return {
     id: neighborhood.toLowerCase(),
@@ -34,7 +36,14 @@ export default function CreateStory(props) {
       onSuccess={() => redirect('/stories')}
     >
       <SimpleForm>
-        <TextInput source="title" validate={[required()]} />
+        <StoryTitleInput />
+        {/* <TextInput
+          source="title"
+          validate={[
+            required(),
+            maxLength(10, 'Title length should not exceed 100 characters'),
+          ]}
+        /> */}
         <TextInput source="authorName" validate={[required()]} />
         <BooleanInput label="Featured" source="isFeatured" />
         <ReferenceInput

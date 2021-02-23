@@ -21,6 +21,8 @@ import {
   NEIGHBORHOODS,
 } from '../../../constants';
 
+import StoryTitleInput from '../../../components/StoryTitleInput';
+
 const neighborhoodChoises = NEIGHBORHOODS.map((neighborhood) => {
   return {
     id: neighborhood.toLowerCase(),
@@ -40,7 +42,8 @@ export default function EditStory(props) {
   return (
     <Edit title="Edit story" {...props}>
       <SimpleForm toolbar={<EditStoryToolbar />}>
-        <TextInput source="title" validate={[required()]} />
+        <StoryTitleInput />
+        {/* <TextInput source="title" validate={[required()]} /> */}
         <TextInput source="authorName" validate={[required()]} />
         <BooleanInput label="Featured" source="isFeatured" />
         <ReferenceInput
