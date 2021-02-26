@@ -46,6 +46,7 @@ export default function CreateStory(props) {
         /> */}
         <TextInput source="authorName" validate={[required()]} />
         <BooleanInput label="Featured" source="isFeatured" />
+        <BooleanInput label="Make the main story" source="isMainStory" />
         <ReferenceInput
           label="Community"
           reference="communities"
@@ -58,7 +59,6 @@ export default function CreateStory(props) {
           source="neighborhood"
           choices={neighborhoodChoises}
           validate={[required()]}
-          autoComplete
         />
         <ImageInput
           source="headerImage"

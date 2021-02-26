@@ -46,6 +46,7 @@ export default function EditStory(props) {
         {/* <TextInput source="title" validate={[required()]} /> */}
         <TextInput source="authorName" validate={[required()]} />
         <BooleanInput label="Featured" source="isFeatured" />
+        <BooleanInput label="Make the main story" source="isMainStory" />
         <ReferenceInput
           label="Community"
           source="communityId"
@@ -58,7 +59,6 @@ export default function EditStory(props) {
           source="neighborhood"
           choices={neighborhoodChoises}
           validate={[required()]}
-          autoComplete
         />
         <ImageInput
           source="headerImage"
